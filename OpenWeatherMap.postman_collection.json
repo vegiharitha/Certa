@@ -1,0 +1,100 @@
+{
+	"info": {
+		"_postman_id": "66ef90b3-cbe7-4fde-960f-4b1f6544216f",
+		"name": "OpenWeatherMap",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "https://samples.openweathermap.org/data/2.5/weather?q=London,uk&appid=b6907d289e10d714a6e88b30761fae22",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Parse the response JSON",
+							"const responseJson = pm.response.json();",
+							"",
+							"// Define the expected latitude and longitude",
+							"const expectedLatitude = 51.51;",
+							"const expectedLongitude = -0.13;",
+							"",
+							"// Get the actual latitude and longitude from the response",
+							"const actualLatitude = responseJson.coord.lat;",
+							"const actualLongitude = responseJson.coord.lon;",
+							"",
+							"// Perform assertions",
+							"pm.test(\"Latitude is correct\", function () {",
+							"    pm.expect(actualLatitude).to.eql(expectedLatitude);",
+							"});",
+							"",
+							"pm.test(\"Longitude is correct\", function () {",
+							"    pm.expect(actualLongitude).to.eql(expectedLongitude);",
+							"});",
+							"",
+							"// Verify the response status code",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// Define the expected weather description",
+							"const expectedWeatherDescription = \"scattered clouds\";",
+							"",
+							"// Get the actual weather description from the response",
+							"const actualWeatherDescription = responseJson.weather[0].description;",
+							"",
+							"// Perform assertion for weather description",
+							"pm.test(\"Weather description is correct\", function () {",
+							"    pm.expect(actualWeatherDescription).to.eql(expectedWeatherDescription);",
+							"});",
+							"",
+							"// Define acceptable temperature range in Celsius",
+							"const minTemperature = -50;",
+							"const maxTemperature = 50;",
+							"",
+							"// Get the actual temperature from the response in Celsius",
+							"const actualTemperature = responseJson.main.temp - 273.15;",
+							"",
+							"// Perform assertion for temperature range",
+							"pm.test(\"Temperature is within range\", function () {",
+							"    pm.expect(actualTemperature).to.be.within(minTemperature, maxTemperature);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://samples.openweathermap.org/data/2.5/weather?q=London,uk&appid=b6907d289e10d714a6e88b30761fae22",
+					"protocol": "https",
+					"host": [
+						"samples",
+						"openweathermap",
+						"org"
+					],
+					"path": [
+						"data",
+						"2.5",
+						"weather"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "London,uk"
+						},
+						{
+							"key": "appid",
+							"value": "b6907d289e10d714a6e88b30761fae22"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
